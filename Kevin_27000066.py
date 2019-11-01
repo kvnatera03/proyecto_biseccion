@@ -8,23 +8,38 @@ Cada participante debe completar su módulo y luego solicitar el Pull-Request.
 import math
 
 
+
 def biseccion(f, a, b, ER, N):
-    """
-    Implementa el Algoritmo de Biseccion y retorna la aproximación de la raiz.
+    i = 1
+    err = 100
+    pm_actual = 0
+    pm_previa = 0
 
-    Parámetros:
-    f: función de variable real f(x).
-    a: límite inferior del intervalo.
-    b: límite superior del intervalo.
-    ER: cota mínima del error relativo.
-    N: número máximo de iteraciones.
-    """
+    if f(a)*f(b) < 0:
+     while (i < N) & (err > ER):
+      pm_previa = pm_actual
+      pm_actual = (a+b)/2
+      fr = f(pm_actual)*f(b)
 
-    print("Iteración:", i, "Punto Medio:", pm_actual, "Error:", err)
+      if fr > 0:
+       b = pm_actual
+      else:
+       a = pm_previa
+     
+      if i > 1:
+       err = abs((pm_actual-pm_previa)/pm_actual)
+
+      print("Iteración:", i, "Punto Medio:", pm_actual, "Error:", err) 
+      i=i+1
+
+    else:
+     print("#Error: Los limites superior e inferior no son validos")
 
     return pm_actual
 
 
 if __name__ == "__main__":
     # Pruebe aquí su función.
+    f = lambda x: x**2 - math.cos(x)
+    biseccion(f, 0.2, 1, 0.16, 10)
     pass
