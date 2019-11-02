@@ -10,32 +10,40 @@ import math
 
 
 def biseccion(f, a, b, ER, N):
-    i = 1
-    err = 100
-    pm_actual = 0
-    pm_previa = 0
+    vOri = {
+      "cont": 1,
+      "eRel": 100,
+      "pAct": 0,
+      "pPre": 0
+    }
 
-    if f(a)*f(b) < 0:
-     while (i < N) & (err > ER):
-      pm_previa = pm_actual
-      pm_actual = (a+b)/2
-      fr = f(pm_actual)*f(b)
+    fOri = lambda x1, x2 : f(x1)*f(x2)
+    lOri = lambda x1, x2 : (x1+x2)/2
+    def messfOri(): print("#Error: limites incorrectos!")
 
-      if fr > 0:
-       b = pm_actual
-      else:
-       a = pm_previa
+    if fOri(a, b) > 0: 
+        messfOri()
+        return
+
+    while (vOri["cont"] < N) & (vOri["eRel"] > ER):
+        vOri["pPre"] = vOri["pAct"]
+        vOri["pAct"] = lOri(a,b)
+
+        if fOri(vOri["pAct"], b) > 0:
+            b = vOri["pAct"]
+        else:
+            a = vOri["pPre"]    
      
-      if i > 1:
-       err = abs((pm_actual-pm_previa)/pm_actual)
+        if vOri["cont"] > 1:
+            vOri["eRel"] = abs((vOri["pAct"]-vOri["pPre"])/vOri["pAct"])
 
-      print("Iteración:", i, "Punto Medio:", pm_actual, "Error:", err) 
-      i=i+1
+        i = vOri["cont"]
+        pm_act = vOri["pAct"]
+        err = vOri["eRel"]
+        print("Iteración:", i, "Punto Medio:", pm_act, "Error:", err) 
+        vOri["cont"] += 1
 
-    else:
-     print("#Error: Los limites superior e inferior no son validos")
-
-    return pm_actual
+    return vOri["pAct"]
 
 
 if __name__ == "__main__":
